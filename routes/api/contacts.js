@@ -3,20 +3,25 @@ const {
 	getAll,
 	getById,
 	create,
-	remove,
 	update,
-} = require("../../controllers");
+	chenge,
+	remove,
+} = require("../../controllers/controllerContact");
+
+const { isValidId } = require("../../middlewares");
 
 const router = express.Router();
 
 router.get("/", getAll);
 
-router.get("/:contactId", getById);
+router.get("/:contactId", isValidId, getById);
 
 router.post("/", create);
 
-router.delete("/:contactId", remove);
+router.put("/:contactId", isValidId, update);
 
-router.put("/:contactId", update);
+router.patch("/:contactId/favorite", isValidId, chenge);
+
+router.delete("/:contactId", isValidId, remove);
 
 module.exports = router;
