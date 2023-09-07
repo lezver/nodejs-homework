@@ -5,8 +5,9 @@ const {
 	current,
 	logout,
 	updateSubscription,
+	updateAvatar,
 } = require("../../controllers/user");
-const { validateBody, auth } = require("../../middlewares");
+const { validateBody, auth, upload } = require("../../middlewares");
 const {
 	registerSchema,
 	loginSchema,
@@ -15,15 +16,16 @@ const {
 
 const router = express.Router();
 
-router.use("/register", validateBody(registerSchema), register);
-router.use("/login", validateBody(loginSchema), login);
+router.post("/register", validateBody(registerSchema), register);
+router.post("/login", validateBody(loginSchema), login);
 router.get("/current", auth, current);
-router.use("/logout", auth, logout);
+router.post("/logout", auth, logout);
 router.patch(
 	"/subscription",
 	auth,
 	validateBody(subscriptionSchema),
 	updateSubscription
 );
+router.patch("/avatars", auth, upload.single("avatar"), updateAvatar);
 
 module.exports = router;
